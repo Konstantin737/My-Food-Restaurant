@@ -129,11 +129,4 @@ export default function modal() {
          closeModalWindow();
       }, 3000);
    };
-
-   //получим доступ к нашей базе данных db.json через fetch
-   fetch('http://localhost:3000/menu')
-      .then(data => data.json())
-      .then(data => console.log(data));
-
-
 }
