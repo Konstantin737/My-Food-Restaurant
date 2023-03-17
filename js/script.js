@@ -1,9 +1,8 @@
-// Вначале делаем глобальный обработчик событий
 window.addEventListener('DOMContentLoaded', () => {
-   //А тут пишем весь остальной код
    const tabsParrent = document.querySelector('.tabheader__items'),
          tabs = document.querySelectorAll('.tabheader__item'),
-         tabsContent = document.querySelectorAll('.tabcontent')
+         tabsContent = document.querySelectorAll('.tabcontent');
+
    //Функция скрывающая не активные табы
    function hideTabContent () {
       tabsContent.forEach(item => {
@@ -15,7 +14,7 @@ window.addEventListener('DOMContentLoaded', () => {
       })
    }
 
-   //Функция показывающая нам табы
+   //Функция показывающая табы
    function showTabContent (i = 0) { //i = 0 задаем по умолчанию если в функцию ничего не передается
       tabsContent[i].classList.add('show', 'fade');
       tabsContent[i].classList.remove('hide');
@@ -32,13 +31,13 @@ window.addEventListener('DOMContentLoaded', () => {
             if(target === item) { //если таргет совпадает с элементом из цикла forEach то
                hideTabContent(item);
                showTabContent(index);
-            }
-         })
-      }
+            };
+         });
+      };
    });
 
    //Имплементация таймера обратного отчета
-   const deadline = '2023-04-13 01:04:00';//сюда мы поместим дату, это будет наша отправная точка
+   const deadline = '2023-07-13 01:04:00';
    
    function getTimeRemaining(endtime) { //'Получить оставшееся время'
       let days, hours, minutes, seconds;
@@ -62,7 +61,7 @@ window.addEventListener('DOMContentLoaded', () => {
          'minutes': minutes,
          'seconds': seconds
       };//переменные часов мин и секунд создались внутри функции и поэтому ф-ция будет возвращать объект
-   }
+   };
 
    //Функция подстановки нуля впереди значения в таймере, если значение однозначное
    function getZero(num) {
@@ -70,8 +69,8 @@ window.addEventListener('DOMContentLoaded', () => {
          return `0${num}`;
       } else {
          return num;
-      }
-   }
+      };
+   };
 
    function timerShow (selector, endtime) {
       const timer = document.querySelector(selector),
@@ -79,9 +78,9 @@ window.addEventListener('DOMContentLoaded', () => {
             hours = timer.querySelector('#hours'),
             minuts = timer.querySelector('#minutes'),
             seconds = timer.querySelector('#seconds'),
-            timerInterval = setInterval(updateClock, 1000)
+            timerInterval = setInterval(updateClock, 1000);
 
-      updateClock()//запустим здесь для того что бы не ждать 1с и в это время видеть начальную верстку
+      updateClock();//запустим здесь для того что бы не ждать 1с и в это время видеть начальную верстку
 
       function updateClock() {
          const timerSet = getTimeRemaining(endtime);
@@ -92,15 +91,14 @@ window.addEventListener('DOMContentLoaded', () => {
 
          if(timerSet.total <= 0) {
             clearInterval(timerInterval)
-         }
-      }
-   }
+         };
+      };
+   };
    timerShow('.timer', deadline)
 
    //Модальное окно
    const btnModal = document.querySelectorAll('[data-modal]'),
          modalWindow = document.querySelector('.modal');
-         // btnCloseModal = document.querySelector('[data-close]');
 
    btnModal.forEach(item => item.addEventListener('click', ()=>{
          openModalWindow();
@@ -110,15 +108,13 @@ window.addEventListener('DOMContentLoaded', () => {
       modalWindow.classList.add('show');
       document.body.style.overflow = 'hidden'; //убрал скролл страницы во время показа модального окна
       clearTimeout(timeOutModalWindow);//если пользователь сам открыл модальное окно мы очищаем этот интервал
-      window.removeEventListener('scroll', showModalByScroll) //удалим обработчик на скролл после открытия модалки пользователем
+      window.removeEventListener('scroll', showModalByScroll); //удалим обработчик на скролл после открытия модалки пользователем
    }
 
    function closeModalWindow() {
       modalWindow.classList.remove('show');
       document.body.style.overflow = ''; //вернул прокрутку, браузер сам подставит по умолчанию auto
    }
-
-   // btnCloseModal.addEventListener('click', closeModalWindow)
 
    modalWindow.addEventListener('click', (e) => {
       if(e.target === modalWindow || e.target.getAttribute('data-close') == '') { //если то по чему кликнули совпадает с тем, что в modalWindow или на то у чего есть атрибут data-close, закрываем МО
@@ -146,7 +142,7 @@ window.addEventListener('DOMContentLoaded', () => {
          window.removeEventListener('scroll', showModalByScroll); //удалим обработчик после 1 срабатывания
       }
    }
-   window.addEventListener('scroll', showModalByScroll)
+   window.addEventListener('scroll', showModalByScroll);
 
 
    //запрос к серверу createCard(data)
@@ -158,13 +154,9 @@ window.addEventListener('DOMContentLoaded', () => {
       return await res.json();
    }
 
-   // запрос к серверу createCard(data)
    getResource('http://localhost:3000/menu')
       .then(data => createCard(data));
 
-   // //Запрос к json-server через axios
-   // axios.get('http://localhost:3000/menu1')
-   //    .then(dataServer => createCard(dataServer.data));
 
    //Имплементация панелей меню
    function createCard(data) { //беру массив объектов с сервера(в db.json)
@@ -197,18 +189,17 @@ window.addEventListener('DOMContentLoaded', () => {
       loading: 'img/form/spinner.svg',
       success: 'Спасибо! Скоро мы с Вами свяжемся',
       failure: 'Ошибка. Что-то пошло не так...'
-   }
+   };
 
    forms.forEach(item => {
       bindPostData(item);
    });
 
    const postData = async (url, data) => {
-      const res = await fetch(url, { //await дожидается результата res, работает в паре с async 
+      const res = await fetch(url, {
          method: 'POST',
-         // body: formData, //что именно отправляем на сервер, не в json формате
-         body:  data, //что именно отправляем на сервер
-         headers: { //это надо когда мы json отправляем
+         body:  data,
+         headers: {
             'Content-type': 'application/json'
          }
       });
@@ -216,41 +207,34 @@ window.addEventListener('DOMContentLoaded', () => {
    }
 
    function bindPostData(form) {
-      form.addEventListener('submit', (e) => {//навешиваю на форму событие submit, оно будет срабатывать каждый раз когда будет выполнятся отправка формы
+      form.addEventListener('submit', (e) => {
          e.preventDefault();
 
-         //Переменная спинера загрузки, помещаем в нее пустой div
+         //Cпинер загрузки, помещаем в нее пустой div
          const statusMessage = document.createElement('img');
          statusMessage.src = message.loading;
          statusMessage.style.cssText = `
             display:block;
             margin: 20px auto auto auto;
-         `
-         // form.append(statusMessage);//вставляем в форму спинер загрузки
-         form.insertAdjacentElement('afterend', statusMessage)//вставляем в форму спинер загрузки после формы
+         `;
 
-         const formData = new FormData(form);//собираем при помощи foemData все данные из нашей формы
+         form.insertAdjacentElement('afterend', statusMessage);//вставляем в форму спинер загрузки после формы
 
-         // //для json мы создаем пустой объект
-         // const object = {}; //и передадим его в body в fetch. И там переведем в json
-         // formData.forEach(function(value, key) {
-         //    object[key] = value;
-         // })
-         //вместо object делаем 
+         const formData = new FormData(form);
          const json = JSON.stringify(Object.fromEntries(formData.entries()))
 
-         postData('http://localhost:3000/requests', json)//сюда json вместо JSON.stringify(object)
+         postData('http://localhost:3000/requests', json);
          .then(data => {
                console.log(data);
                showThanksModal(message.success);
          }).catch(() => {
                showThanksModal(message.failure);
-         }).finally(() => {//выполнится всегда
-            form.reset()//сбросить форму после отправки. Можно очищать input.value отдельно заменяя иодержимое на ''
-            statusMessage.remove();//удаляется спинер отправки со странички
-         })
-      })
-   }
+         }).finally(() => {
+            form.reset();
+            statusMessage.remove();
+         });
+      });
+   };
 
    //отдельное модальное окно для вывода информации отправки формы
    function showThanksModal(message) {
@@ -274,13 +258,12 @@ window.addEventListener('DOMContentLoaded', () => {
 
       //Через какое то время блок модалки с сообщением исчезает и все возвращается обратно как было
       setTimeout(() => {
-         prevModalDialog.classList.add('show');//снял невидимость с блока формы обратной связи
-         prevModalDialog.classList.remove('hide');//снял невидимость с блока формы обратной связи
-         document.querySelector('.modal').removeChild(thanksModal); //удалил из родителя новосозданный div с сообщением
-         // thanksModal.remove()//можно удалить модалку с сообщением и так
-         closeModalWindow();//закрываю модальное окно ранее созданной функцией
-      }, 3000)
-   }
+         prevModalDialog.classList.add('show');
+         prevModalDialog.classList.remove('hide');
+         document.querySelector('.modal').removeChild(thanksModal);
+         closeModalWindow();
+      }, 3000);
+   };
 
    //получим доступ к нашей базе данных db.json через fetch
    fetch('http://localhost:3000/menu')
@@ -311,7 +294,7 @@ window.addEventListener('DOMContentLoaded', () => {
       slideImages[countImages].classList.remove('hide');
       dots.forEach(item => item.classList.remove('dot_active'))
       dots[countImages].classList.add('dot_active');
-   }
+   };
 
    //Обработчики событий перелистывание картинки
    buttonLeft.addEventListener('click', ()=>{
@@ -371,11 +354,11 @@ window.addEventListener('DOMContentLoaded', () => {
    btnCalculatingChoose = document.querySelectorAll('.calculating__choose');
    btnCalculatingChoose.forEach(item => item.addEventListener('click', (e) => {
       if(e.target.id === 'female') {
-         female.classList.add('calculating__choose-item_active')
-         male.classList.remove('calculating__choose-item_active')
+         female.classList.add('calculating__choose-item_active');
+         male.classList.remove('calculating__choose-item_active');
       } else if(e.target.id === 'male') {
-         male.classList.add('calculating__choose-item_active')
-         female.classList.remove('calculating__choose-item_active')
+         male.classList.add('calculating__choose-item_active');
+         female.classList.remove('calculating__choose-item_active');
       } else if(e.target.id === 'low') {
          activitiyBtn.forEach(item => item.classList.remove('calculating__choose-item_active'));
          low.classList.add('calculating__choose-item_active');
@@ -410,125 +393,3 @@ window.addEventListener('DOMContentLoaded', () => {
       document.querySelector('#calories').textContent = calories;
    },1000)
 });
-
-
-
-
-//Cтарый код работы с сервером
-
-
-//создали вместо этого кода функцию postData выше
-// fetch('server.php', { //берем и отправляем данные на сервер
-//    method: 'POST',
-//    // body: formData, //что именно отправляем на сервер, не в json формате
-//    body:  JSON.stringify(object), //что именно отправляем на сервер
-//    headers: { //это надо когда мы json отправляем
-//       'Content-type': 'application/json'
-//    }
-// })
-
-// //старый способ
-// const request = new XMLHttpRequest();
-// request.open('POST', 'server.php');
-
-// теперь вместо него новый fetch
-// fetch('server.php', {
-//    method: 'POST',
-//    body: formData,
-//    headers: {
-//       'Content-type': 'application/json'
-//    }
-// })
-
-// используем объект formData он позваляет быстро сформировать объект из формы с введенными данными(p.s у инпутов должны быть заполнены поля name в html иначе форм дата не сможет найти этот инпут и взять из него value)
-// request.setRequestHeader('Content-type', 'multipart/form-data');//этот заголовок с FormData устанавливать не нужно
-
-// //для json нам потребуется заголовок (старый способ, написали в fetch)
-// request.setRequestHeader('Content-type', 'application/json');
-
-// //для json мы создаем пустой объект
-// const object = {};
-// formData.forEach(function(value, key) {
-//    // console.log(key);
-//    // console.log(value);
-//    object[key] = value;
-// })
-// const json = JSON.stringify(object);
-
-
-// отправляем наши данные на сервер объект formData
-// request.send(formData);
-// //отправляем наши данные на сервер объект object в формате json(теперь это в fetch)
-// request.send(json);
-
-// request.addEventListener('load', () => {
-//    if (request.status === 200) {
-//       console.log(request.response);
-//       // statusMessage.textContent = message.success;// сообщение успешно отправленной формы
-//       form.reset()//сбросить форму после отправки. Можно очищать input.value отдельно заменяя иодержимое на ''
-//       showThanksModal(message.success);
-//       statusMessage.remove(); //удаляется спинер отправки со странички
-//    } else {
-//       // statusMessage.textContent = message.failure;// сообщение не успешно отправленной формы
-//       showThanksModal(message.failure);
-//       form.reset()
-//       statusMessage.remove();
-//    }
-// })
-
-// class ItemMenu {
-   //    constructor (image, h3text, description, price, alternativeImg, selector) {
-   //       this.image = image;
-   //       this.h3text = h3text;
-   //       this.description = description;
-   //       this.price = price;
-   //       this.alternativeImg = alternativeImg;
-   //       this.transfer = 74;
-   //       this.changeToUSD();//работает сразу внутри
-   //    }
-   //    changeToUSD() {
-   //       this.price = Math.floor(this.price / this.transfer) //перевод в доллары
-   //    }
-   //    buildItemMenu () {
-   //       const menuConteiner = document.querySelector('.container_menu')
-   //       const menuItem = 
-   //          `<div class="menu__item">
-   //             <img src=${this.image} alt=${this.alternativeImg}>
-   //             <h3 class="menu__item-subtitle">Меню ${this.h3text}</h3>
-   //             <div class="menu__item-descr">${this.description}</div>
-   //             <div class="menu__item-divider"></div>
-   //             <div class="menu__item-price">
-   //                <div class="menu__item-cost">Цена:</div>
-   //                <div class="menu__item-total"><span>${this.price}</span> $/день</div>
-   //             </div>
-   //          </div>`
-   //       menuConteiner.insertAdjacentHTML('beforeend', menuItem);
-   //    }
-   // }
-
-   // const getResource = async (url) => {
-   //    const res = await fetch(url);
-
-   //    if(!res.ok) {
-   //       throw new Error(`Could not fetch ${url}, status: ${res.status}`)
-   //    }
-
-   //    return await res.json();
-   // }
-
-   // getResource('http://localhost:3000/requests')
-   // .then(data => {
-   //    data.forEach(({img, altimg, title, descr, price}) => {
-   //       new ItemMenu(img, altimg, title, descr, price);
-   //    });
-   // });
-   
-   // // Карточки сформировали с сервера
-   // const menu1 = new ItemMenu('img/tabs/vegy.jpg', 'Фитнес', 'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!', 229, 'vegy');
-   // menu1.buildItemMenu();
-
-   // const menu2 = new ItemMenu('img/tabs/elite.jpg', 'Премиум', 'В меню “Премиум” мы используем не только красивый дизайн упаковки, но и качественное исполнение блюд. Красная рыба, морепродукты, фрукты - ресторанное меню без похода в ресторан!', 550, 'elite')
-   // menu2.buildItemMenu();
-
-   // const menu3 = new ItemMenu('img/tabs/post.jpg', 'Постное', 'Постное” - это тщательный подбор ингредиентов: полное отсутствие продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных вегетарианских стейков.', 430, 'post');
-   // menu3.buildItemMenu();
