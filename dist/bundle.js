@@ -225,26 +225,27 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ modal)
 /* harmony export */ });
+
 function modal() {
-    //Модальное окно
-    const btnModal = document.querySelectorAll('[data-modal]'),
-    modalWindow = document.querySelector('.modal');
+   //Модальное окно
+   const btnModal = document.querySelectorAll('[data-modal]'),
+   modalWindow = document.querySelector('.modal');
+
+   function openModalWindow() {
+      modalWindow.classList.add('show');
+      document.body.style.overflow = 'hidden'; //убрал скролл страницы во время показа модального окна
+      clearTimeout(timeOutModalWindow);//если пользователь сам открыл модальное окно мы очищаем этот интервал
+      window.removeEventListener('scroll', showModalByScroll); //удалим обработчик на скролл после открытия модалки пользователем
+   };
+   
+   function closeModalWindow() {
+      modalWindow.classList.remove('show');
+      document.body.style.overflow = ''; //вернул прокрутку, браузер сам подставит по умолчанию auto
+   };
 
    btnModal.forEach(item => item.addEventListener('click', ()=>{
       openModalWindow();
    }))
-
-   function openModalWindow() {
-   modalWindow.classList.add('show');
-   document.body.style.overflow = 'hidden'; //убрал скролл страницы во время показа модального окна
-   clearTimeout(timeOutModalWindow);//если пользователь сам открыл модальное окно мы очищаем этот интервал
-   window.removeEventListener('scroll', showModalByScroll); //удалим обработчик на скролл после открытия модалки пользователем
-   }
-
-   function closeModalWindow() {
-   modalWindow.classList.remove('show');
-   document.body.style.overflow = ''; //вернул прокрутку, браузер сам подставит по умолчанию auto
-   }
 
    modalWindow.addEventListener('click', (e) => {
    if(e.target === modalWindow || e.target.getAttribute('data-close') == '') { //если то по чему кликнули совпадает с тем, что в modalWindow или на то у чего есть атрибут data-close, закрываем МО
@@ -357,6 +358,7 @@ function modal() {
       }, 3000);
    };
 }
+
 
 /***/ }),
 
@@ -497,9 +499,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ timer)
 /* harmony export */ });
-function timer() {
+function timer(id, deadline) {
    //Имплементация таймера обратного отчета
-   const deadline = '2023-07-13 01:04:00';
+   // const deadline = '2023-07-13 01:04:00';//передаем из script.js id, deadline в timer()
    
    function getTimeRemaining(endtime) { //'Получить оставшееся время'
       let days, hours, minutes, seconds;
@@ -556,7 +558,7 @@ function timer() {
          };
       };
    };
-   timerShow('.timer', deadline);
+   timerShow(id, deadline);
 }
 
 /***/ })
@@ -643,7 +645,7 @@ window.addEventListener('DOMContentLoaded', () => {
    //Имплементация меню стиля питания
    (0,_tabs__WEBPACK_IMPORTED_MODULE_1__["default"])();
    //Имплементация таймера обратного отчета
-   (0,_timer__WEBPACK_IMPORTED_MODULE_2__["default"])();
+   (0,_timer__WEBPACK_IMPORTED_MODULE_2__["default"])('.timer', '2023-07-13 01:04:00');
    //Имплементация панелей меню
    (0,_cards__WEBPACK_IMPORTED_MODULE_3__["default"])();
    //Имплементация слайдера

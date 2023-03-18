@@ -1,6 +1,6 @@
-export default function timer() {
+export default function timer(id, deadline) {
    //Имплементация таймера обратного отчета
-   const deadline = '2023-07-13 01:04:00';
+   // const deadline = '2023-07-13 01:04:00';//передаем из script.js id, deadline в timer()
    
    function getTimeRemaining(endtime) { //'Получить оставшееся время'
       let days, hours, minutes, seconds;
@@ -57,5 +57,5 @@ export default function timer() {
          };
       };
    };
-   timerShow('.timer', deadline);
+   timerShow(id, deadline);
 }

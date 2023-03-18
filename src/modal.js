@@ -1,23 +1,24 @@
+
 export default function modal() {
-    //Модальное окно
-    const btnModal = document.querySelectorAll('[data-modal]'),
-    modalWindow = document.querySelector('.modal');
+   //Модальное окно
+   const btnModal = document.querySelectorAll('[data-modal]'),
+   modalWindow = document.querySelector('.modal');
+
+   function openModalWindow() {
+      modalWindow.classList.add('show');
+      document.body.style.overflow = 'hidden'; //убрал скролл страницы во время показа модального окна
+      clearTimeout(timeOutModalWindow);//если пользователь сам открыл модальное окно мы очищаем этот интервал
+      window.removeEventListener('scroll', showModalByScroll); //удалим обработчик на скролл после открытия модалки пользователем
+   };
+   
+   function closeModalWindow() {
+      modalWindow.classList.remove('show');
+      document.body.style.overflow = ''; //вернул прокрутку, браузер сам подставит по умолчанию auto
+   };
 
    btnModal.forEach(item => item.addEventListener('click', ()=>{
       openModalWindow();
    }))
-
-   function openModalWindow() {
-   modalWindow.classList.add('show');
-   document.body.style.overflow = 'hidden'; //убрал скролл страницы во время показа модального окна
-   clearTimeout(timeOutModalWindow);//если пользователь сам открыл модальное окно мы очищаем этот интервал
-   window.removeEventListener('scroll', showModalByScroll); //удалим обработчик на скролл после открытия модалки пользователем
-   }
-
-   function closeModalWindow() {
-   modalWindow.classList.remove('show');
-   document.body.style.overflow = ''; //вернул прокрутку, браузер сам подставит по умолчанию auto
-   }
 
    modalWindow.addEventListener('click', (e) => {
    if(e.target === modalWindow || e.target.getAttribute('data-close') == '') { //если то по чему кликнули совпадает с тем, что в modalWindow или на то у чего есть атрибут data-close, закрываем МО

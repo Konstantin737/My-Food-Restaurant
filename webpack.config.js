@@ -11,5 +11,7 @@ module.exports = {
 
   devtool: "source-map",
 
-  module: {},
+  module: {
+    rules: [{ test: /\.txt$/, use: 'raw-loader' }],
+  }
 };
